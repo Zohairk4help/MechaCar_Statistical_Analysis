@@ -1,0 +1,356 @@
+# Deliverable 1
+
+head(MechaCar_mpg_table)
+
+# Performed Multiple Linear Regression
+lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data=MechaCar_mpg_table) #generate multiple linear regression model
+
+# #generate summary statistics
+summary(lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data=MechaCar_mpg_table))
+
+# linear model to proove that no variables have slope coefficient of 0. 
+model <- lm(mpg ~ vehicle_length,MechaCar_mpg_table) #create linear model
+yvals <- model$coefficients['vehicle_length']*MechaCar_mpg_table$vehicle_length +
+model$coefficients['(Intercept)'] #determine y-axis values from linear model
+
+model <- lm(mpg ~ vehicle_weight,MechaCar_mpg_table) #create linear model
+yvals <- model$coefficients['vehicle_weight']*MechaCar_mpg_table$vehicle_weight +
+  model$coefficients['(Intercept)'] #determine y-axis values from linear model
+plt <- ggplot(MechaCar_mpg_table,aes(x=vehicle_weight,y=mpg)) #import dataset into ggplot2
+plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+
+
+model <- lm(mpg ~ spoiler_angle,MechaCar_mpg_table) #create linear model
+yvals <- model$coefficients['spoiler_angle']*MechaCar_mpg_table$spoiler_angle +
+  model$coefficients['(Intercept)'] #determine y-axis values from linear model
+plt <- ggplot(MechaCar_mpg_table,aes(x=spoiler_angle,y=mpg)) #import dataset into ggplot2
+plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+
+
+model <- lm(mpg ~ ground_clearance,MechaCar_mpg_table) #create linear model
+yvals <- model$coefficients['ground_clearance']*MechaCar_mpg_table$ground_clearance +
+  model$coefficients['(Intercept)'] #determine y-axis values from linear model
+plt <- ggplot(MechaCar_mpg_table,aes(x=ground_clearance,y=mpg)) #import dataset into ggplot2
+plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+
+
+model <- lm(mpg ~ AWD,MechaCar_mpg_table) #create linear model
+yvals <- model$coefficients['AWD']*MechaCar_mpg_table$AWD +
+  model$coefficients['(Intercept)'] #determine y-axis values from linear model
+plt <- ggplot(MechaCar_mpg_table,aes(x=AWD,y=mpg)) #import dataset into ggplot2
+plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+
+
+# Deliverable 2
+Suspension_Coil_table <- read.csv(file='Suspension_Coil.csv',check.names=F,stringsAsFactors = F)
+total_summary <- Suspension_Coil_table %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD=sd(PSI),Variance=var(PSI), .groups = 'keep') #create summary table with multiple columns
+
+lot_summary <- Suspension_Coil_table %>% group_by(Manufacturing_Lot) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD=sd(PSI),Variance=var(PSI), .groups = 'keep') #create lot_summary table
+
+
+
+# Deliverable 3
+# 15.6.2: Use the One-Sample t-Test
+t.test(Suspension_Coil_table$PSI,mu=1500) #compare sample versus population means- one-sampl test
+# ref: https://cran.r-project.org/web/packages/distributions3/vignettes/one-sample-t-test.html
+#ref:https://stackoverflow.com/questions/46654676/how-to-run-a-t-test-on-a-subset-of-data
+#ref: https://www.datacamp.com/community/tutorials/subsets-in-r
+## subsetting from each manufacturing lot's t.test()
+
+var_lot1 <- Suspension_Coil_table$PSI[Suspension_Coil_table$Manufacturing_Lot=="Lot1"]
+var_lot2 <- Suspension_Coil_table$PSI[Suspension_Coil_table$Manufacturing_Lot=="Lot2"]
+var_lot3 <- Suspension_Coil_table$PSI[Suspension_Coil_table$Manufacturing_Lot=="Lot3"]
+
+t.test(var_lot1,mu=1500)
+t.test(var_lot2,mu=1500)
+t.test(var_lot3,mu=1500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(tidyverse)
+-- Attaching packages ------------------------------------------------------ tidyverse 1.3.1 --
+v ggplot2 3.3.5     v purrr   0.3.4
+v tibble  3.1.6     v dplyr   1.0.7
+v tidyr   1.1.4     v stringr 1.4.0
+v readr   2.1.0     v forcats 0.5.1
+-- Conflicts --------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+> library(jsonlite)
+
+Attaching package: ‘jsonlite’
+
+The following object is masked from ‘package:purrr’:
+
+    flatten
+
+
+Restarting R session...
+
+> install.packages(c("dplyr", "jsonlite", "tidyverse"))
+Installing packages into ‘C:/Users/zohairk/OneDrive/Documents/R/win-library/4.1’
+(as ‘lib’ is unspecified)
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.1/dplyr_1.0.7.zip'
+Content type 'application/zip' length 1345809 bytes (1.3 MB)
+downloaded 1.3 MB
+
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.1/jsonlite_1.7.2.zip'
+Content type 'application/zip' length 544687 bytes (531 KB)
+downloaded 531 KB
+
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.1/tidyverse_1.3.1.zip'
+Content type 'application/zip' length 430170 bytes (420 KB)
+downloaded 420 KB
+
+package ‘dplyr’ successfully unpacked and MD5 sums checked
+package ‘jsonlite’ successfully unpacked and MD5 sums checked
+package ‘tidyverse’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+	C:\Users\zohairk\AppData\Local\Temp\RtmpikwtbD\downloaded_packages
+> setwd("C:/Users/zohairk/OneDrive/Desktop/personalrepo/Modules/Module15 R/R_Analysis/01_Demo")
+> MechaCar_mpg_table <- read.csv(file='MechaCar_mpg.csv',check.names=F,stringsAsFactors = F)
+> View(MechaCar_mpg_table)
+> head(MechaCar_mpg_table)
+  vehicle_length vehicle_weight spoiler_angle ground_clearance AWD      mpg
+1       14.69710       6407.946      48.78998         14.64098   1 49.04918
+2       12.53421       5182.081      90.00000         14.36668   1 36.76606
+3       20.00000       8337.981      78.63232         12.25371   0 80.00000
+4       13.42849       9419.671      55.93903         12.98936   1 18.94149
+5       15.44998       3772.667      26.12816         15.10396   1 63.82457
+6       14.45357       7286.595      30.58568         13.10695   0 48.54268
+> MechaCar_mpg <- read.csv("C:/Users/zohairk/OneDrive/Desktop/personalrepo/Modules/Module15 R/R_Analysis/01_Demo/MechaCar_mpg.csv")
+>   View(MechaCar_mpg)
+> setwd("C:/Users/zohairk/OneDrive/Desktop/personalrepo/Modules/Module15 R/R_Analysis/01_Demo")
+> # Performed Multiple Linear Regression
+Warning message:
+In flat_str(content, breaks) : Coercing content to character
+> lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar_mpg_table) #generate multiple linear regression model
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg_table)
+
+Coefficients:
+     (Intercept)    vehicle_length    vehicle_weight     spoiler_angle  ground_clearance  
+      -1.040e+02         6.267e+00         1.245e-03         6.877e-02         3.546e+00  
+             AWD  
+      -3.411e+00  
+
+> # #generate summary statistics
+> summary(lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar_mpg_table))
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg_table)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.4701  -4.4994  -0.0692   5.4433  18.5849 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      -1.040e+02  1.585e+01  -6.559 5.08e-08 ***
+vehicle_length    6.267e+00  6.553e-01   9.563 2.60e-12 ***
+vehicle_weight    1.245e-03  6.890e-04   1.807   0.0776 .  
+spoiler_angle     6.877e-02  6.653e-02   1.034   0.3069    
+ground_clearance  3.546e+00  5.412e-01   6.551 5.21e-08 ***
+AWD              -3.411e+00  2.535e+00  -1.346   0.1852    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.774 on 44 degrees of freedom
+Multiple R-squared:  0.7149,	Adjusted R-squared:  0.6825 
+F-statistic: 22.07 on 5 and 44 DF,  p-value: 5.35e-11
+
+> # Performed Multiple Linear Regression
+> lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data=MechaCar_mpg_table) #generate multiple linear regression model
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg_table)
+
+Coefficients:
+     (Intercept)    vehicle_length    vehicle_weight     spoiler_angle  ground_clearance               AWD  
+      -1.040e+02         6.267e+00         1.245e-03         6.877e-02         3.546e+00        -3.411e+00  
+
+> # #generate summary statistics
+> summary(lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data=MechaCar_mpg_table))
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg_table)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.4701  -4.4994  -0.0692   5.4433  18.5849 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      -1.040e+02  1.585e+01  -6.559 5.08e-08 ***
+vehicle_length    6.267e+00  6.553e-01   9.563 2.60e-12 ***
+vehicle_weight    1.245e-03  6.890e-04   1.807   0.0776 .  
+spoiler_angle     6.877e-02  6.653e-02   1.034   0.3069    
+ground_clearance  3.546e+00  5.412e-01   6.551 5.21e-08 ***
+AWD              -3.411e+00  2.535e+00  -1.346   0.1852    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.774 on 44 degrees of freedom
+Multiple R-squared:  0.7149,	Adjusted R-squared:  0.6825 
+F-statistic: 22.07 on 5 and 44 DF,  p-value: 5.35e-11
+
+> model <- lm(mpg ~ vehicle_length,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['vehicle_length']*MechaCar_mpg_table$vehicle_length +
++ model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> model <- lm(mpg ~ vehicle_length,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['vehicle_length']*MechaCar_mpg_table$vehicle_length +
++     model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=vehicle_length,y=mpg)) #import dataset into ggplot2
+Error in ggplot(MechaCar_mpg_table, aes(x = vehicle_length, y = mpg)) : 
+  could not find function "ggplot"
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+Error: object 'plt' not found
+> library(ggplot2)
+> plt <- ggplot(MechaCar_mpg_table,aes(x=vehicle_length,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> model <- lm(mpg ~ vehicle_weight,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['vehicle_weight']*MechaCar_mpg_table$vehicle_weight +
++   model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=vehicle_weight,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> model <- lm(mpg ~ spoiler_angle,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['spoiler_angle']*MechaCar_mpg_table$vehicle_weight +
++   model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=spoiler_angle,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> model <- lm(mpg ~ spoiler_angle,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['spoiler_angle']*MechaCar_mpg_table$spoiler_angle +
++   model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=spoiler_angle,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> model <- lm(mpg ~ ground_clearance,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['ground_clearance']*MechaCar_mpg_table$ground_clearance +
++   model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=ground_clearance,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> model <- lm(mpg ~ AWD,MechaCar_mpg_table) #create linear model
+> yvals <- model$coefficients['AWD']*MechaCar_mpg_table$AWD +
++   model$coefficients['(Intercept)'] #determine y-axis values from linear model
+> plt <- ggplot(MechaCar_mpg_table,aes(x=AWD,y=mpg)) #import dataset into ggplot2
+> plt + geom_point() + geom_line(aes(y=yvals), color = "red") #plot scatter
+> View(plt)
+> setwd("C:/Users/zohairk/OneDrive/Desktop/personalrepo/Modules/Module15 R/R_Analysis/01_Demo")
+> Suspension_Coil_table <- read.csv(file='MechaCar_mpg.csv',check.names=F,stringsAsFactors = F)
+> View(Suspension_Coil_table)
+> Suspension_Coil_table <- read.csv(file='Suspension_Coil.csv',check.names=F,stringsAsFactors = F)
+> View(Suspension_Coil_table)
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(condition) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+Error in Suspension_Coil_table %>% group_by(condition) %>% summarize(Mean_PSI = mean(PSI),  : 
+  could not find function "%>%"
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(condition) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+Error: Must group by variables found in `.data`.
+* Column `condition` is not found.
+Run `rlang::last_error()` to see where the error occurred.
+> library(tidyr)
+> library(tidyverse)
+-- Attaching packages ----------------------------------------------------------------- tidyverse 1.3.1 --
+v tibble  3.1.6     v stringr 1.4.0
+v readr   2.1.0     v forcats 0.5.1
+v purrr   0.3.4     
+-- Conflicts -------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+> library(jsonlite)
+
+Attaching package: ‘jsonlite’
+
+The following object is masked from ‘package:purrr’:
+
+    flatten
+
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(condition) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+Error: Must group by variables found in `.data`.
+* Column `condition` is not found.
+Run `rlang::last_error()` to see where the error occurred.
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(condition) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+Error: Must group by variables found in `.data`.
+* Column `condition` is not found.
+Run `rlang::last_error()` to see where the error occurred.
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(Manufacturing_Lot) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+> View(summarize_Suspension_Coil_table)
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),Variance_SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+> View(summarize_Suspension_Coil_table)
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD_PSI=sd(PSI),Variance_PSI=sd(PSI) .groups = 'keep') #create summary table with multiple columns
+Error: unexpected symbol in "summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD_PSI=sd(PSI),Variance_PSI=sd(PSI) .groups"
+> View(summarize_Suspension_Coil_table)
+> summarize_Suspension_Coil_table <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD_PSI=sd(PSI),Variance_PSI=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+> View(summarize_Suspension_Coil_table)
+> total_summary <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD_PSI=sd(PSI),Variance_PSI=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+> View(Suspension_Coil_table)
+> View(total_summary)
+> rm(summarize_Suspension_Coil_table)
+> total_summary <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI),Median_PSI=median(PSI),SD_PSI=sd(PSI),Variance_PSI=var(PSI), .groups = 'keep') #create summary table with multiple columns
+> View(total_summary)
+> rm(total_summary)
+> summarize_demo <- demo_table2 %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI), .groups = 'keep') #create summary table
+Error in group_by(., PSI) : object 'demo_table2' not found
+> total_summary <- Suspension_Coil_table %>% group_by(PSI) %>% summarize(Mean_PSI=mean(PSI), .groups = 'keep') #create summary table
+> View(total_summary)
+> rm(total_summary)
+> total_summary <- Suspension_Coil_table %>% group_by(total_summary) %>% summarize(Mean_PSI=mean(PSI), .groups = 'keep') #create summary table
+Error: Must group by variables found in `.data`.
+* Column `total_summary` is not found.
+Run `rlang::last_error()` to see where the error occurred.
+
+
+

@@ -1,0 +1,11 @@
+https://statsandr.com/blog/how-to-upload-r-code-on-github-example-with-an-r-script-on-mac-os/
+https://support.rstudio.com/hc/en-us/articles/200484448-Editing-and-Executing-Code-in-the-RStudio-IDE
+
+https://dev.to/sameerkatija/github-markdown-cheat-sheet-everything-you-need-to-know-to-write-readme-md-2eca
+
+
+https://stackoverflow.com/questions/39378020/how-to-display-table-in-readme-md-file-in-github
+
+
+
+
